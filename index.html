@@ -11,8 +11,8 @@
 <meta name="twitter:card" content="summary">
 <style>
   :root{
-    --bg:#0a0f1e; --bg2:#0d1424; --ink:#e8edf5; --mut:#94a3b8; --dim:#64748b;
-    --teal:#2dd4bf; --teal2:#14b8a6; --line:#1c2740; --code:#0d1117;
+    --bg:#08091e; --bg2:#0c0f26; --ink:#e2eaf8; --mut:#7b8fb5; --dim:#4d6080;
+    --teal:#38bdf8; --teal2:#0ea5e9; --green:#34d399; --purple:#a78bfa; --line:#171e3a; --code:#060718;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -24,7 +24,7 @@
     display:flex;align-items:center;justify-content:space-between;
     padding:16px 28px;border-bottom:1px solid var(--line);
     gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:5;
-    background:rgba(10,15,30,.85);backdrop-filter:blur(8px);
+    background:rgba(8,9,30,.88);backdrop-filter:blur(8px);
   }
   .nav-left{display:flex;align-items:center;gap:12px}
   .wordmark{font-weight:700;letter-spacing:.14em;font-size:14px}
@@ -37,7 +37,7 @@
   .nav-links{display:flex;gap:18px;font-size:13px;color:var(--mut)}
   .nav-links a:hover{color:var(--ink)}
   .npm-btn{
-    font-size:13px;font-weight:600;color:#04201c;background:var(--teal);
+    font-size:13px;font-weight:600;color:#031425;background:var(--teal);
     border-radius:8px;padding:8px 14px;border:none;cursor:pointer;
     transition:background .2s;
   }
@@ -51,7 +51,7 @@
   }
   .col-left{max-width:520px}
   .eyebrow{
-    font-size:11.5px;letter-spacing:.22em;color:var(--teal);font-weight:600;
+    font-size:11.5px;letter-spacing:.22em;color:var(--purple);font-weight:600;
     margin-bottom:20px;
   }
   h1{font-size:46px;line-height:1.06;font-weight:700;letter-spacing:-.02em}
@@ -62,7 +62,7 @@
   .ctas{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
   .cta-primary{
     font-family:ui-monospace,Menlo,monospace;font-size:13.5px;font-weight:600;
-    color:#04201c;background:var(--teal);border-radius:9px;padding:13px 18px;
+    color:#031425;background:var(--teal);border-radius:9px;padding:13px 18px;
     border:none;cursor:pointer;transition:background .2s,transform .1s;
   }
   .cta-primary:hover{background:var(--teal2);transform:translateY(-1px)}
@@ -86,7 +86,7 @@
     border-bottom:1px solid var(--line);
   }
   .dot{width:9px;height:9px;border-radius:50%}
-  .dot.r{background:#3a4660}.dot.y{background:#3a4660}.dot.g{background:#3a4660}
+  .dot.r{background:#2d3468}.dot.y{background:#2d3468}.dot.g{background:#2d3468}
   .chat-title{
     margin-left:6px;font-size:11.5px;color:var(--dim);letter-spacing:.04em;
     font-family:ui-monospace,Menlo,monospace;
@@ -106,14 +106,14 @@
   }
   .bubble.show{animation:bubbleIn .42s cubic-bezier(.2,.8,.25,1) forwards}
   .row.user .bubble{
-    background:#16213b;border:1px solid var(--line);border-bottom-right-radius:5px;
+    background:#0e1440;border:1px solid var(--line);border-bottom-right-radius:5px;
   }
   .row.agent .bubble{
-    background:#101a30;border:1px solid var(--line);border-bottom-left-radius:5px;
+    background:#0b1038;border:1px solid var(--line);border-bottom-left-radius:5px;
     color:var(--ink);
   }
-  .bubble.success{border-color:rgba(45,212,191,.45);box-shadow:0 0 0 1px rgba(45,212,191,.18),0 0 22px -6px rgba(45,212,191,.4)}
-  .bubble.success .ck{color:var(--teal);font-weight:700;margin-right:5px}
+  .bubble.success{border-color:rgba(52,211,153,.45);box-shadow:0 0 0 1px rgba(52,211,153,.18),0 0 22px -6px rgba(52,211,153,.4)}
+  .bubble.success .ck{color:var(--green);font-weight:700;margin-right:5px}
   .caret{display:inline-block;width:2px;height:1em;background:var(--teal);
     margin-left:1px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
 
@@ -133,17 +133,17 @@
   .gate-label{font-size:12.5px;color:var(--mut)}
   .gate-claim{
     font-family:ui-monospace,Menlo,monospace;font-size:13px;color:var(--ink);
-    background:#0a1322;border:1px solid var(--line);border-radius:7px;
+    background:#0a1030;border:1px solid var(--line);border-radius:7px;
     padding:5px 9px;margin-top:10px;display:inline-flex;align-items:center;gap:7px;
   }
   .gate-ring{
     position:absolute;inset:-1px;border-radius:13px;pointer-events:none;
-    box-shadow:0 0 0 1px rgba(45,212,191,.5);opacity:0;
+    box-shadow:0 0 0 1px rgba(56,189,248,.5);opacity:0;
   }
   .gate.pulsing .gate-ring{animation:ring 1.6s ease-in-out infinite}
-  .gate.verified{border-color:rgba(45,212,191,.5)}
+  .gate.verified{border-color:rgba(52,211,153,.5)}
   .gate-status{
-    display:none;font-size:13px;color:var(--teal);font-weight:600;
+    display:none;font-size:13px;color:var(--green);font-weight:600;
     align-items:center;gap:7px;
   }
   .gate.verified .gate-top{display:none}
@@ -152,18 +152,18 @@
 
   @keyframes gateIn{to{opacity:1;transform:translateY(0)}}
   @keyframes ring{
-    0%,100%{opacity:.15;box-shadow:0 0 0 1px rgba(45,212,191,.4)}
-    50%{opacity:.9;box-shadow:0 0 0 2px rgba(45,212,191,.65),0 0 16px -2px rgba(45,212,191,.5)}
+    0%,100%{opacity:.15;box-shadow:0 0 0 1px rgba(56,189,248,.4)}
+    50%{opacity:.9;box-shadow:0 0 0 2px rgba(56,189,248,.65),0 0 16px -2px rgba(56,189,248,.5)}
   }
 
   /* wallet chip (floats, connects to gate) */
   .wallet{
     position:absolute;right:14px;bottom:14px;width:120px;
-    background:#0a1322;border:1px solid var(--line);border-radius:12px;
+    background:#0a1030;border:1px solid var(--line);border-radius:12px;
     padding:10px;opacity:0;transform:translateY(12px) scale(.96);
   }
   .wallet.show{animation:walletIn .45s cubic-bezier(.2,.8,.25,1) forwards}
-  .wallet.lit{border-color:rgba(45,212,191,.55);box-shadow:0 0 22px -6px rgba(45,212,191,.45)}
+  .wallet.lit{border-color:rgba(52,211,153,.55);box-shadow:0 0 22px -6px rgba(52,211,153,.45)}
   .wallet-top{display:flex;align-items:center;gap:7px;margin-bottom:8px}
   .wallet-top span{font-size:10px;color:var(--dim);letter-spacing:.05em;
     font-family:ui-monospace,Menlo,monospace}
@@ -173,7 +173,8 @@
     padding:6px 8px;color:var(--dim);display:flex;align-items:center;
     justify-content:space-between;gap:6px;transition:color .35s,border-color .35s;
   }
-  .wallet.lit .cred{color:var(--teal);border-color:rgba(45,212,191,.45)}
+  .cred.proved{color:var(--green);border-color:rgba(52,211,153,.45)}
+  .gate-claim+.gate-claim{margin-top:5px}
   .cred .tick{opacity:0;transition:opacity .3s}
   .wallet.lit .cred .tick{opacity:1}
 
@@ -182,7 +183,7 @@
   /* transfer beam wallet -> gate */
   .beam{
     position:absolute;height:2px;border-radius:2px;
-    background:linear-gradient(90deg,transparent,var(--teal),transparent);
+    background:linear-gradient(90deg,transparent,var(--green),transparent);
     opacity:0;pointer-events:none;
   }
   .beam.fire{animation:beam 1s ease-in-out forwards}
@@ -199,36 +200,36 @@
 
   /* ---------- landing sections (from v2) ---------- */
   .wrap{max-width:1040px;margin:0 auto;padding:0 1.5rem}
-  .seclabel{font-size:.66rem;letter-spacing:.22em;font-weight:800;color:var(--teal);text-transform:uppercase}
+  .seclabel{font-size:.66rem;letter-spacing:.22em;font-weight:800;color:var(--purple);text-transform:uppercase}
   section{padding:4.5rem 0;border-bottom:1px solid var(--line)}
   section.hero{padding:44px 56px}
   h2{font-size:1.7rem;letter-spacing:-.02em;font-weight:700;margin:.6rem 0 1rem}
   .sub{color:var(--mut);font-size:1.15rem;max-width:40rem}
   .code{background:var(--code);border:1px solid var(--line);border-radius:12px;padding:1.2rem 1.4rem;font-family:ui-monospace,Menlo,monospace;font-size:.86rem;line-height:1.8;overflow:auto;white-space:pre}
-  .c-key{color:#7dd3fc}.c-fn{color:#5eead4}.c-num{color:#a5d6ff}.c-str{color:#a5d6ff}.c-cm{color:#64748b}
+  .c-key{color:#93c5fd}.c-fn{color:#6ee7b7}.c-num{color:#c4b5fd}.c-str{color:#a5d6ff}.c-cm{color:#4d6080}
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1.6rem}
   .card{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:1.3rem}
   .card .n{color:var(--teal);font-weight:800;font-size:.8rem}.card h3{margin:.4rem 0 .4rem;font-size:1.05rem}.card p{color:var(--mut);font-size:.9rem;margin:0}
   .rails{display:grid;grid-template-columns:1.3fr .9fr;gap:.5rem 1.4rem;margin-top:1.4rem;font-size:.92rem}
   .rails .r{padding:.7rem 0;border-bottom:1px solid var(--line);color:var(--mut)}.rails .r b{color:var(--ink)}
-  .real{color:var(--teal)}.demo{color:#fbbf24}
+  .real{color:var(--green)}.demo{color:#fbbf24}
   .logos{display:flex;gap:2rem;flex-wrap:wrap;color:var(--mut);margin-top:1.2rem;font-weight:600}
   .cta{display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;align-items:center}
-  .btn{background:var(--teal2);color:#04241f;font-weight:700;padding:.55rem 1rem;border-radius:8px;font-size:.85rem;text-decoration:none}
-  .btn-ghost{border:1px solid var(--line);color:var(--ink);padding:.55rem 1rem;border-radius:8px;font-size:.85rem}
+  .btn{background:var(--teal2);color:#031425;font-weight:700;padding:.55rem 1rem;border-radius:8px;font-size:.85rem;text-decoration:none}
+  .btn-ghost{border:1px solid rgba(167,139,250,.5);color:var(--purple);background:rgba(167,139,250,.08);padding:.55rem 1rem;border-radius:8px;font-size:.85rem}
   footer{padding:3rem 0;color:var(--dim);font-size:.85rem;border-bottom:none}
 
   /* ---------- try it live ---------- */
   .try-cols{display:grid;grid-template-columns:1.1fr 1fr;gap:2rem;align-items:start;margin-top:1.6rem}
   .connector-block{background:var(--code);border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.2rem;margin-bottom:1.4rem}
-  .connector-lbl{font-size:.65rem;letter-spacing:.16em;font-weight:800;color:var(--teal);text-transform:uppercase;margin-bottom:.6rem}
+  .connector-lbl{font-size:.65rem;letter-spacing:.16em;font-weight:800;color:var(--purple);text-transform:uppercase;margin-bottom:.6rem}
   .connector-url{display:flex;align-items:center;gap:.6rem;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.6rem .9rem;margin-bottom:.75rem}
-  .connector-url code{font-family:ui-monospace,Menlo,monospace;font-size:.82rem;color:#7dd3fc;flex:1;word-break:break-all}
+  .connector-url code{font-family:ui-monospace,Menlo,monospace;font-size:.82rem;color:#93c5fd;flex:1;word-break:break-all}
   .compat-badges{display:flex;gap:.4rem;flex-wrap:wrap}
-  .compat-badge{font-size:.72rem;font-weight:700;color:var(--teal);border:1px solid rgba(45,212,191,.35);border-radius:5px;padding:.2rem .55rem;background:var(--bg)}
+  .compat-badge{font-size:.72rem;font-weight:700;color:var(--teal);border:1px solid rgba(56,189,248,.35);border-radius:5px;padding:.2rem .55rem;background:var(--bg)}
   .try-steps{display:flex;flex-direction:column;gap:.9rem}
   .try-step{display:flex;gap:.75rem;align-items:flex-start}
-  .try-step-n{width:22px;height:22px;border-radius:50%;background:var(--code);border:1px solid rgba(45,212,191,.4);color:var(--teal);font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem}
+  .try-step-n{width:22px;height:22px;border-radius:50%;background:var(--code);border:1px solid rgba(56,189,248,.4);color:var(--teal);font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem}
   .try-step-body{font-size:.9rem;color:var(--mut);line-height:1.5}
   .try-step-body b{color:var(--ink)}
   .try-dev-note{margin-top:1.1rem;padding-top:.9rem;border-top:1px solid var(--line);font-size:.82rem;color:var(--dim);line-height:1.6}
@@ -239,19 +240,25 @@
   .s-row.user{justify-content:flex-end}
   .s-row.agent{justify-content:flex-start}
   .s-bubble{max-width:82%;padding:.6rem .85rem;border-radius:12px;font-size:.85rem;line-height:1.45}
-  .s-row.user .s-bubble{background:#16213b;border:1px solid var(--line);border-bottom-right-radius:4px}
-  .s-row.agent .s-bubble{background:#101a30;border:1px solid var(--line);border-bottom-left-radius:4px;color:var(--mut)}
+  .s-row.user .s-bubble{background:#0e1440;border:1px solid var(--line);border-bottom-right-radius:4px}
+  .s-row.agent .s-bubble{background:#0b1038;border:1px solid var(--line);border-bottom-left-radius:4px;color:var(--mut)}
   .s-gate{align-self:flex-start;background:var(--code);border:1px solid var(--line);border-radius:10px;padding:.6rem .75rem;font-size:.8rem;display:flex;align-items:center;gap:.5rem}
   .s-gate .lock{font-size:.9rem}
   .s-gate code{font-family:ui-monospace,Menlo,monospace;color:var(--teal);font-size:.78rem}
-  .s-success{border-color:rgba(45,212,191,.4)!important;box-shadow:0 0 0 1px rgba(45,212,191,.15),0 0 18px -6px rgba(45,212,191,.35)}
-  .s-success .ck{color:var(--teal);font-weight:700;margin-right:.3rem}
+  .s-success{border-color:rgba(52,211,153,.4)!important;box-shadow:0 0 0 1px rgba(52,211,153,.15),0 0 18px -6px rgba(52,211,153,.35)}
+  .s-success .ck{color:var(--green);font-weight:700;margin-right:.3rem}
   .module-cards{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.9rem}
   .module-card{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:.85rem}
   .module-role{font-size:.6rem;letter-spacing:.1em;font-weight:800;text-transform:uppercase;color:var(--dim);margin-bottom:.25rem}
   .module-pkg{font-family:ui-monospace,Menlo,monospace;font-size:.72rem;color:var(--teal);margin-bottom:.35rem}
   .module-card h4{font-size:.88rem;font-weight:700;margin-bottom:.2rem}
   .module-card p{font-size:.78rem;color:var(--mut);line-height:1.4;margin:0}
+  .yt-embed{background:var(--bg2);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:.9rem}
+  .yt-frame-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden}
+  .yt-frame-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+  .yt-caption{padding:.6rem 1rem .75rem;display:flex;flex-direction:column;gap:.15rem}
+  .yt-label{font-size:.6rem;letter-spacing:.18em;font-weight:800;text-transform:uppercase;color:var(--purple)}
+  .yt-title{font-size:.85rem;font-weight:600;color:var(--ink);line-height:1.35}
 
   /* ---------- reduced motion: static success state ---------- */
   @media (prefers-reduced-motion: reduce){
@@ -284,7 +291,7 @@
   <nav>
     <div class="nav-left">
       <span class="wordmark">ATTESTOMCP</span>
-      <span class="pill">v0.1 · OPENWALLET FOUNDATION</span>
+      <span class="pill">v0.1 · OPENWALLET FOUNDATION · AAIF FOUNDATION</span>
     </div>
     <div class="nav-right">
       <div class="nav-links">
@@ -292,7 +299,7 @@
         <a href="https://github.com/openmobilehub/attesto/tree/main/docs/reference">Docs</a>
         <a href="https://github.com/openmobilehub/attesto">GitHub</a>
       </div>
-      <a class="npm-btn" href="https://www.npmjs.com/package/@openmobilehub/attesto-gate">npm install</a>
+      <a class="npm-btn" href="https://www.npmjs.com/package/@openmobilehub/attestomcp-gate">npm install</a>
     </div>
   </nav>
 
@@ -302,16 +309,16 @@
       <h1>AI agents are learning to act.<span class="ask">Make them ask first.</span></h1>
       <p class="subhead">An agent proves a verifiable credential from the user's wallet before a consequential action completes. <b style="color:var(--ink)">Identity leads; payments is one application.</b></p>
       <div class="ctas">
-        <a class="cta-primary" href="https://www.npmjs.com/package/@openmobilehub/attesto-gate">npm i @openmobilehub/attesto-gate</a>
+        <a class="cta-primary" href="https://www.npmjs.com/package/@openmobilehub/attestomcp-gate">npm i @openmobilehub/attestomcp-gate</a>
         <a class="cta-ghost" href="https://github.com/openmobilehub/attesto/tree/main/docs/reference">Read the docs →</a>
       </div>
     </div>
 
     <div class="col-right">
-      <div class="chat" role="img" aria-label="An AI agent pauses to prove an age_over_21 credential from the user's wallet before placing an order.">
+      <div class="chat" role="img" aria-label="An AI agent pauses to prove age_over_21 and payment credentials from the user's wallet before placing an order.">
         <div class="chat-head">
           <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-          <span class="chat-title">agent session · attesto-gate</span>
+          <span class="chat-title">agent session · attestomcp-gate</span>
         </div>
         <div class="chat-body" id="stage">
           <!-- 1: user message (typewriter) -->
@@ -320,25 +327,29 @@
           </div>
           <!-- 2: agent pauses -->
           <div class="row agent" id="r2" style="display:none">
-            <div class="bubble" id="agentAsk">One moment — this needs proof of age.</div>
+            <div class="bubble" id="agentAsk">One moment — two credentials required.</div>
           </div>
           <!-- 3: gate card -->
           <div class="gate" id="gate" style="display:none">
             <div class="gate-ring"></div>
             <div class="gate-top">
               <span class="gate-lock">🔒</span>
-              <span class="gate-label">Prove credential</span>
+              <span class="gate-label">Prove credentials</span>
             </div>
             <div class="gate-claim"><span>age_over_21</span></div>
+            <div class="gate-claim"><span>payment · usd</span></div>
             <div class="gate-status"><span>✓</span> verified</div>
           </div>
           <!-- 4: wallet chip -->
-          <div class="wallet" id="wallet" style="display:none">
+          <div class="wallet" id="wallet" style="display:none;width:148px">
             <div class="wallet-top">
               <span>📱</span><span>WALLET</span>
             </div>
-            <div class="cred">
+            <div class="cred" id="cred1">
               <span>age_over_21</span><span class="tick">✓</span>
+            </div>
+            <div class="cred" id="cred2" style="margin-top:5px">
+              <span>payment · usd</span><span class="tick">✓</span>
             </div>
           </div>
           <!-- transfer beam -->
@@ -361,7 +372,7 @@
   <section><div class="wrap">
     <div class="seclabel">Try it live</div>
     <h2>A complete MCP storefront — no setup required.</h2>
-    <p class="sub">attesto-storefront is a ready-to-run MCP server: nine shopping tools, a product widget, and a gated checkout. Add the hosted connector and order the whiskey — the age gate fires automatically.</p>
+    <p class="sub">attestomcp-storefront is a ready-to-run MCP server: nine shopping tools, a product widget, and a gated checkout. Add the hosted connector and order the whiskey — the age gate fires automatically.</p>
     <div class="try-cols">
 
       <div>
@@ -394,10 +405,21 @@
       </div>
 
       <div>
+        <div class="yt-embed">
+          <div class="yt-frame-wrap">
+            <iframe src="https://www.youtube.com/embed/biTqHo2dL7M"
+                    title="AttestoMCP — consent flow demo"
+                    allowfullscreen loading="lazy" frameborder="0"></iframe>
+          </div>
+          <div class="yt-caption">
+            <span class="yt-label">Demo</span>
+            <span class="yt-title">Consent flow — end to end</span>
+          </div>
+        </div>
         <div class="demo-static" role="img" aria-label="An AI agent adds the whiskey, the checkout tool requires age_over_21, the user proves it on their device, and the order completes.">
           <div class="chat-head">
             <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-            <span class="chat-title">claude · attesto-storefront</span>
+            <span class="chat-title">claude · attestomcp-storefront</span>
           </div>
           <div class="demo-body-static">
             <div class="s-row user"><div class="s-bubble">Add the whiskey and check out.</div></div>
@@ -410,13 +432,13 @@
         <div class="module-cards">
           <div class="module-card">
             <div class="module-role">Demo app</div>
-            <div class="module-pkg">attesto-storefront</div>
+            <div class="module-pkg">attestomcp-storefront</div>
             <h4>Run &amp; customize</h4>
             <p>Nine MCP tools, product widget, gated checkout. Inject your catalog, own the code.</p>
           </div>
           <div class="module-card">
             <div class="module-role">Gate library</div>
-            <div class="module-pkg">attesto-gate</div>
+            <div class="module-pkg">attestomcp-gate</div>
             <h4>Gate any app</h4>
             <p>Mount on any Express app. <code style="color:var(--teal)">required()</code> / <code style="color:var(--teal)">optional()</code> over any credential.</p>
           </div>
@@ -439,11 +461,14 @@
   <!-- QUICKSTART (gates as a ladder) -->
   <section style="background:var(--bg2)"><div class="wrap">
     <div class="seclabel">Quickstart</div><h2>Mount it on any app in ten lines.</h2>
-    <div class="code" style="max-width:48rem"><span class="c-key">const</span> store = <span class="c-fn">createStorefront</span>();
-<span class="c-key">const</span> attesto = <span class="c-key">new</span> <span class="c-fn">Attesto</span>();
-attesto.<span class="c-fn">mount</span>(store.app);  <span class="c-cm">// wires the /attesto/* wallet rails</span>
+    <div class="code" style="max-width:48rem"><span class="c-key">import</span> { <span class="c-fn">createStorefront</span> } <span class="c-key">from</span> <span class="c-str">"@openmobilehub/attestomcp-storefront/server"</span>;
+<span class="c-key">import</span> { <span class="c-fn">AttestoMCP</span>, <span class="c-fn">age</span>, <span class="c-fn">membership</span>, <span class="c-fn">payment</span>, <span class="c-fn">required</span>, <span class="c-fn">optional</span> } <span class="c-key">from</span> <span class="c-str">"@openmobilehub/attestomcp-gate"</span>;
 
-store.<span class="c-fn">gate</span>((order) =&gt; attesto.<span class="c-fn">requirements</span>(order, [
+<span class="c-key">const</span> store = <span class="c-fn">createStorefront</span>();
+<span class="c-key">const</span> attestomcp = <span class="c-key">new</span> <span class="c-fn">AttestoMCP</span>();
+attestomcp.<span class="c-fn">mount</span>(store.app);  <span class="c-cm">// wires the /attestomcp/* wallet rails</span>
+
+store.<span class="c-fn">gate</span>((order) =&gt; attestomcp.<span class="c-fn">requirements</span>(order, [
   <span class="c-fn">required</span>(<span class="c-fn">age</span>.over(<span class="c-num">21</span>)),
   <span class="c-fn">optional</span>(<span class="c-fn">membership</span>.discount(<span class="c-num">10</span>)),
   <span class="c-fn">required</span>(<span class="c-fn">payment</span>.in(<span class="c-str">"usd"</span>)),
@@ -477,7 +502,7 @@ store.<span class="c-fn">gate</span>((order) =&gt; attesto.<span class="c-fn">re
   <!-- FOR DEVELOPERS -->
   <section style="background:var(--bg2)"><div class="wrap">
     <div class="seclabel">For developers</div><h2>Two packages. Apache-2.0. Ships its own types.</h2>
-    <div class="cta"><span class="btn">@openmobilehub/attesto-gate</span><span class="btn-ghost">@openmobilehub/attesto-storefront</span><span style="color:var(--mut)">· Docs · Examples · Reference demo →</span></div>
+    <div class="cta"><span class="btn">@openmobilehub/attestomcp-gate</span><span class="btn-ghost">@openmobilehub/attestomcp-storefront</span><span style="color:var(--mut)">· Docs · Examples · Reference demo →</span></div>
   </div></section>
 
   <footer><div class="wrap">Apache-2.0 · GitHub · npm · An Open Mobile Hub project (Linux Foundation / OpenWallet Foundation) · heading to GDC</div></footer>
@@ -494,6 +519,7 @@ store.<span class="c-fn">gate</span>((order) =&gt; attesto.<span class="c-fn">re
   var agentAsk=document.getElementById('agentAsk');
   var gate=document.getElementById('gate'), wallet=document.getElementById('wallet'),
       beam=document.getElementById('beam'), placed=document.getElementById('placed');
+  var cred1=document.getElementById('cred1'), cred2=document.getElementById('cred2');
 
   var MSG = "Add the whiskey and check out.";
   var timers = [];
@@ -507,6 +533,7 @@ store.<span class="c-fn">gate</span>((order) =&gt; attesto.<span class="c-fn">re
     r2.style.display='flex'; agentAsk.classList.add('show');
     gate.style.display='block'; gate.classList.add('show','verified');
     wallet.style.display='block'; wallet.classList.add('show','lit');
+    cred1.classList.add('proved'); cred2.classList.add('proved');
     r5.style.display='flex'; placed.classList.add('show');
     return;
   }
@@ -544,6 +571,7 @@ store.<span class="c-fn">gate</span>((order) =&gt; attesto.<span class="c-fn">re
     agentAsk.className='bubble';
     placed.className='bubble success';
     gate.className='gate'; wallet.className='wallet'; beam.className='beam';
+    cred1.className='cred'; cred2.className='cred';
     caret.style.display='inline-block';
     typed.textContent='';
     stage.classList.remove('fading');
@@ -574,31 +602,35 @@ store.<span class="c-fn">gate</span>((order) =&gt; attesto.<span class="c-fn">re
       at(450, function(){ gate.classList.add('pulsing'); });
     });
 
-    // beat 4 — wallet lights up, beam transfers credential
+    // beat 4 — wallet appears, credentials prove sequentially
     at(3950, function(){
       wallet.style.display='block';
       wallet.classList.add('show');
-      at(450, function(){ wallet.classList.add('lit'); });
+      at(450, function(){
+        cred1.classList.add('proved');  // age_over_21 proves
+        wallet.classList.add('lit');
+      });
+      at(1200, function(){ cred2.classList.add('proved'); });  // payment · usd proves
     });
-    at(4800, function(){
+    at(5500, function(){
       positionBeam();
       beam.style.display='block';
       beam.classList.add('fire');
     });
 
     // beat 5 — gate flips to verified, order placed
-    at(5750, function(){
+    at(6450, function(){
       gate.classList.remove('pulsing');
       gate.classList.add('verified');
     });
-    at(6200, function(){
+    at(6950, function(){
       r5.style.display='flex';
       placed.classList.add('show');
     });
 
-    // hold ~1s on success, fade, restart
-    at(7500, function(){ stage.classList.add('fading'); });
-    at(8250, function(){ run(); });
+    // hold ~1.5s on success, fade, restart
+    at(8300, function(){ stage.classList.add('fading'); });
+    at(9100, function(){ run(); });
   }
 
   run();
