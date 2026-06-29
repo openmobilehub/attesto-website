@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attesto — the consent layer for AI agents</title>
+<meta name="description" content="An AI agent proves a verifiable credential from the user's wallet before a consequential action completes. Identity leads; payments is one application. Open source, Apache-2.0.">
+<meta property="og:title" content="Attesto — the consent layer for AI agents">
+<meta property="og:description" content="Make AI agents ask first: prove a verifiable credential before a consequential action completes.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<style>
+  :root{
+    --bg:#0a0f1e; --bg2:#0d1424; --ink:#e8edf5; --mut:#94a3b8; --dim:#64748b;
+    --teal:#2dd4bf; --teal2:#14b8a6; --line:#1c2740; --code:#0d1117;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;display:flex;flex-direction:column}
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- top nav ---------- */
+  nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 28px;border-bottom:1px solid var(--line);
+    gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:5;
+    background:rgba(10,15,30,.85);backdrop-filter:blur(8px);
+  }
+  .nav-left{display:flex;align-items:center;gap:12px}
+  .wordmark{font-weight:700;letter-spacing:.14em;font-size:14px}
+  .pill{
+    font-size:10px;letter-spacing:.06em;color:var(--mut);
+    border:1px solid var(--line);border-radius:999px;padding:4px 9px;
+    white-space:nowrap;
+  }
+  .nav-right{display:flex;align-items:center;gap:20px}
+  .nav-links{display:flex;gap:18px;font-size:13px;color:var(--mut)}
+  .nav-links a:hover{color:var(--ink)}
+  .npm-btn{
+    font-size:13px;font-weight:600;color:#04201c;background:var(--teal);
+    border-radius:8px;padding:8px 14px;border:none;cursor:pointer;
+    transition:background .2s;
+  }
+  .npm-btn:hover{background:var(--teal2)}
+
+  /* ---------- hero layout ---------- */
+  .hero{
+    flex:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
+    gap:48px;align-items:center;padding:44px 56px;max-width:1280px;
+    margin:0 auto;width:100%;
+  }
+  .col-left{max-width:520px}
+  .eyebrow{
+    font-size:11.5px;letter-spacing:.22em;color:var(--teal);font-weight:600;
+    margin-bottom:20px;
+  }
+  h1{font-size:46px;line-height:1.06;font-weight:700;letter-spacing:-.02em}
+  h1 .ask{color:var(--teal);display:block}
+  .subhead{
+    margin-top:22px;color:var(--mut);font-size:16px;line-height:1.55;max-width:440px;
+  }
+  .ctas{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
+  .cta-primary{
+    font-family:ui-monospace,Menlo,monospace;font-size:13.5px;font-weight:600;
+    color:#04201c;background:var(--teal);border-radius:9px;padding:13px 18px;
+    border:none;cursor:pointer;transition:background .2s,transform .1s;
+  }
+  .cta-primary:hover{background:var(--teal2);transform:translateY(-1px)}
+  .cta-ghost{
+    font-size:14px;font-weight:500;color:var(--ink);background:transparent;
+    border:1px solid var(--line);border-radius:9px;padding:13px 18px;cursor:pointer;
+    transition:border-color .2s,color .2s;
+  }
+  .cta-ghost:hover{border-color:var(--teal);color:var(--teal)}
+
+  /* ---------- chat surface ---------- */
+  .col-right{display:flex;justify-content:center}
+  .chat{
+    width:100%;max-width:440px;background:var(--bg2);
+    border:1px solid var(--line);border-radius:18px;
+    box-shadow:0 24px 60px -28px rgba(0,0,0,.7);
+    overflow:hidden;
+  }
+  .chat-head{
+    display:flex;align-items:center;gap:9px;padding:13px 16px;
+    border-bottom:1px solid var(--line);
+  }
+  .dot{width:9px;height:9px;border-radius:50%}
+  .dot.r{background:#3a4660}.dot.y{background:#3a4660}.dot.g{background:#3a4660}
+  .chat-title{
+    margin-left:6px;font-size:11.5px;color:var(--dim);letter-spacing:.04em;
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .chat-body{
+    padding:18px 16px;height:392px;display:flex;flex-direction:column;
+    gap:12px;position:relative;
+  }
+
+  /* message bubbles */
+  .row{display:flex;width:100%}
+  .row.user{justify-content:flex-end}
+  .row.agent{justify-content:flex-start}
+  .bubble{
+    max-width:80%;padding:11px 14px;border-radius:14px;font-size:14px;
+    line-height:1.45;opacity:0;transform:translateY(8px);
+  }
+  .bubble.show{animation:bubbleIn .42s cubic-bezier(.2,.8,.25,1) forwards}
+  .row.user .bubble{
+    background:#16213b;border:1px solid var(--line);border-bottom-right-radius:5px;
+  }
+  .row.agent .bubble{
+    background:#101a30;border:1px solid var(--line);border-bottom-left-radius:5px;
+    color:var(--ink);
+  }
+  .bubble.success{border-color:rgba(45,212,191,.45);box-shadow:0 0 0 1px rgba(45,212,191,.18),0 0 22px -6px rgba(45,212,191,.4)}
+  .bubble.success .ck{color:var(--teal);font-weight:700;margin-right:5px}
+  .caret{display:inline-block;width:2px;height:1em;background:var(--teal);
+    margin-left:1px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+
+  @keyframes bubbleIn{to{opacity:1;transform:translateY(0)}}
+  @keyframes blink{50%{opacity:0}}
+
+  /* gate card */
+  .gate{
+    margin-top:2px;align-self:flex-start;width:84%;
+    background:var(--code);border:1px solid var(--line);border-radius:13px;
+    padding:13px 14px;opacity:0;transform:translateY(14px);
+    position:relative;
+  }
+  .gate.show{animation:gateIn .5s cubic-bezier(.2,.8,.25,1) forwards}
+  .gate-top{display:flex;align-items:center;gap:9px}
+  .gate-lock{font-size:15px}
+  .gate-label{font-size:12.5px;color:var(--mut)}
+  .gate-claim{
+    font-family:ui-monospace,Menlo,monospace;font-size:13px;color:var(--ink);
+    background:#0a1322;border:1px solid var(--line);border-radius:7px;
+    padding:5px 9px;margin-top:10px;display:inline-flex;align-items:center;gap:7px;
+  }
+  .gate-ring{
+    position:absolute;inset:-1px;border-radius:13px;pointer-events:none;
+    box-shadow:0 0 0 1px rgba(45,212,191,.5);opacity:0;
+  }
+  .gate.pulsing .gate-ring{animation:ring 1.6s ease-in-out infinite}
+  .gate.verified{border-color:rgba(45,212,191,.5)}
+  .gate-status{
+    display:none;font-size:13px;color:var(--teal);font-weight:600;
+    align-items:center;gap:7px;
+  }
+  .gate.verified .gate-top{display:none}
+  .gate.verified .gate-claim{display:none}
+  .gate.verified .gate-status{display:inline-flex}
+
+  @keyframes gateIn{to{opacity:1;transform:translateY(0)}}
+  @keyframes ring{
+    0%,100%{opacity:.15;box-shadow:0 0 0 1px rgba(45,212,191,.4)}
+    50%{opacity:.9;box-shadow:0 0 0 2px rgba(45,212,191,.65),0 0 16px -2px rgba(45,212,191,.5)}
+  }
+
+  /* wallet chip (floats, connects to gate) */
+  .wallet{
+    position:absolute;right:14px;bottom:14px;width:120px;
+    background:#0a1322;border:1px solid var(--line);border-radius:12px;
+    padding:10px;opacity:0;transform:translateY(12px) scale(.96);
+  }
+  .wallet.show{animation:walletIn .45s cubic-bezier(.2,.8,.25,1) forwards}
+  .wallet.lit{border-color:rgba(45,212,191,.55);box-shadow:0 0 22px -6px rgba(45,212,191,.45)}
+  .wallet-top{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+  .wallet-top span{font-size:10px;color:var(--dim);letter-spacing:.05em;
+    font-family:ui-monospace,Menlo,monospace}
+  .cred{
+    font-family:ui-monospace,Menlo,monospace;font-size:11px;
+    background:#0d1117;border:1px solid var(--line);border-radius:6px;
+    padding:6px 8px;color:var(--dim);display:flex;align-items:center;
+    justify-content:space-between;gap:6px;transition:color .35s,border-color .35s;
+  }
+  .wallet.lit .cred{color:var(--teal);border-color:rgba(45,212,191,.45)}
+  .cred .tick{opacity:0;transition:opacity .3s}
+  .wallet.lit .cred .tick{opacity:1}
+
+  @keyframes walletIn{to{opacity:1;transform:translateY(0) scale(1)}}
+
+  /* transfer beam wallet -> gate */
+  .beam{
+    position:absolute;height:2px;border-radius:2px;
+    background:linear-gradient(90deg,transparent,var(--teal),transparent);
+    opacity:0;pointer-events:none;
+  }
+  .beam.fire{animation:beam 1s ease-in-out forwards}
+  @keyframes beam{
+    0%{opacity:0;transform:scaleX(.2)}
+    25%{opacity:1}
+    70%{opacity:1;transform:scaleX(1)}
+    100%{opacity:0;transform:scaleX(1)}
+  }
+
+  /* fade whole stage on restart */
+  .chat-body.fading > *:not(.beam){animation:fadeOut .6s ease forwards}
+  @keyframes fadeOut{to{opacity:0;transform:translateY(-6px)}}
+
+  /* ---------- landing sections (from v2) ---------- */
+  .wrap{max-width:1040px;margin:0 auto;padding:0 1.5rem}
+  .seclabel{font-size:.66rem;letter-spacing:.22em;font-weight:800;color:var(--teal);text-transform:uppercase}
+  section{padding:4.5rem 0;border-bottom:1px solid var(--line)}
+  section.hero{padding:44px 56px}
+  h2{font-size:1.7rem;letter-spacing:-.02em;font-weight:700;margin:.6rem 0 1rem}
+  .sub{color:var(--mut);font-size:1.15rem;max-width:40rem}
+  .code{background:var(--code);border:1px solid var(--line);border-radius:12px;padding:1.2rem 1.4rem;font-family:ui-monospace,Menlo,monospace;font-size:.86rem;line-height:1.8;overflow:auto;white-space:pre}
+  .c-key{color:#7dd3fc}.c-fn{color:#5eead4}.c-num{color:#a5d6ff}.c-str{color:#a5d6ff}.c-cm{color:#64748b}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1.6rem}
+  .card{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:1.3rem}
+  .card .n{color:var(--teal);font-weight:800;font-size:.8rem}.card h3{margin:.4rem 0 .4rem;font-size:1.05rem}.card p{color:var(--mut);font-size:.9rem;margin:0}
+  .rails{display:grid;grid-template-columns:1.3fr .9fr;gap:.5rem 1.4rem;margin-top:1.4rem;font-size:.92rem}
+  .rails .r{padding:.7rem 0;border-bottom:1px solid var(--line);color:var(--mut)}.rails .r b{color:var(--ink)}
+  .real{color:var(--teal)}.demo{color:#fbbf24}
+  .logos{display:flex;gap:2rem;flex-wrap:wrap;color:var(--mut);margin-top:1.2rem;font-weight:600}
+  .cta{display:flex;gap:.8rem;margin-top:1.6rem;flex-wrap:wrap;align-items:center}
+  .btn{background:var(--teal2);color:#04241f;font-weight:700;padding:.55rem 1rem;border-radius:8px;font-size:.85rem;text-decoration:none}
+  .btn-ghost{border:1px solid var(--line);color:var(--ink);padding:.55rem 1rem;border-radius:8px;font-size:.85rem}
+  footer{padding:3rem 0;color:var(--dim);font-size:.85rem;border-bottom:none}
+
+  /* ---------- reduced motion: static success state ---------- */
+  @media (prefers-reduced-motion: reduce){
+    .bubble,.gate,.wallet{opacity:1!important;transform:none!important;animation:none!important}
+    .caret{display:none}
+    .gate.pulsing .gate-ring{animation:none;opacity:.4}
+    .beam{display:none}
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:880px){
+    .hero{grid-template-columns:1fr;padding:34px 28px;gap:34px;text-align:left}
+    section.hero{padding:34px 28px}
+    .col-right{order:2}
+    h1{font-size:38px}
+    .nav-links{display:none}
+    .grid3{grid-template-columns:1fr}
+  }
+  @media (max-width:520px){
+    nav{padding:14px 18px}
+    .pill{display:none}
+    h1{font-size:31px}
+  }
+</style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-left">
+      <span class="wordmark">ATTESTO</span>
+      <span class="pill">v0.1 · OPENWALLET FOUNDATION</span>
+    </div>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="https://github.com/openmobilehub/attesto/tree/main/docs/reference">Docs</a>
+        <a href="https://github.com/openmobilehub/attesto">GitHub</a>
+      </div>
+      <a class="npm-btn" href="https://www.npmjs.com/package/@openmobilehub/attesto-gate">npm install</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="col-left">
+      <div class="eyebrow">THE CONSENT LAYER FOR AI AGENTS</div>
+      <h1>AI agents are learning to act.<span class="ask">Make them ask first.</span></h1>
+      <p class="subhead">An agent proves a verifiable credential from the user's wallet before a consequential action completes. <b style="color:var(--ink)">Identity leads; payments is one application.</b></p>
+      <div class="ctas">
+        <a class="cta-primary" href="https://www.npmjs.com/package/@openmobilehub/attesto-gate">npm i @openmobilehub/attesto-gate</a>
+        <a class="cta-ghost" href="https://github.com/openmobilehub/attesto/tree/main/docs/reference">Read the docs →</a>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <div class="chat" role="img" aria-label="An AI agent pauses to prove an age_over_21 credential from the user's wallet before placing an order.">
+        <div class="chat-head">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="chat-title">agent session · attesto-gate</span>
+        </div>
+        <div class="chat-body" id="stage">
+          <!-- 1: user message (typewriter) -->
+          <div class="row user" id="r1" style="display:none">
+            <div class="bubble" id="userBubble"><span id="typed"></span><span class="caret" id="caret"></span></div>
+          </div>
+          <!-- 2: agent pauses -->
+          <div class="row agent" id="r2" style="display:none">
+            <div class="bubble" id="agentAsk">One moment — this needs proof of age.</div>
+          </div>
+          <!-- 3: gate card -->
+          <div class="gate" id="gate" style="display:none">
+            <div class="gate-ring"></div>
+            <div class="gate-top">
+              <span class="gate-lock">🔒</span>
+              <span class="gate-label">Prove credential</span>
+            </div>
+            <div class="gate-claim"><span>age_over_21</span></div>
+            <div class="gate-status"><span>✓</span> verified</div>
+          </div>
+          <!-- 4: wallet chip -->
+          <div class="wallet" id="wallet" style="display:none">
+            <div class="wallet-top">
+              <span>📱</span><span>WALLET</span>
+            </div>
+            <div class="cred">
+              <span>age_over_21</span><span class="tick">✓</span>
+            </div>
+          </div>
+          <!-- transfer beam -->
+          <div class="beam" id="beam"></div>
+          <!-- 5: order placed -->
+          <div class="row agent" id="r5" style="display:none">
+            <div class="bubble success" id="placed"><span class="ck">✓</span>Order placed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM band -->
+  <section style="background:var(--bg2)">
+    <div class="wrap"><h2 style="max-width:46rem">Agents can check out a cart, unlock age-restricted content, grant access. <span style="color:var(--mut)">Should they — without proof?</span></h2></div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how"><div class="wrap">
+    <div class="seclabel">How it works</div><h2>One handoff. The agent orchestrates; it never holds the credential.</h2>
+    <div class="grid3">
+      <div class="card"><div class="n">01</div><h3>The tool mints a link</h3><p>Your MCP tool reports what the action requires — no phone in the loop.</p></div>
+      <div class="card"><div class="n">02</div><h3>The user proves it</h3><p>One browser/wallet session: WebAuthn passkey or an OpenID4VP presentation.</p></div>
+      <div class="card"><div class="n">03</div><h3>The action completes</h3><p>The agent polls, then proceeds — enforced server-side, not a hidden button.</p></div>
+    </div>
+  </div></section>
+
+  <!-- QUICKSTART (gates as a ladder) -->
+  <section style="background:var(--bg2)"><div class="wrap">
+    <div class="seclabel">Quickstart</div><h2>Mount it on any app in ten lines.</h2>
+    <div class="code" style="max-width:48rem"><span class="c-key">const</span> store = <span class="c-fn">createStorefront</span>();
+<span class="c-key">const</span> attesto = <span class="c-key">new</span> <span class="c-fn">Attesto</span>();
+attesto.<span class="c-fn">mount</span>(store.app);  <span class="c-cm">// wires the /attesto/* wallet rails</span>
+
+store.<span class="c-fn">gate</span>((order) =&gt; attesto.<span class="c-fn">requirements</span>(order, [
+  <span class="c-fn">required</span>(<span class="c-fn">age</span>.over(<span class="c-num">21</span>)),
+  <span class="c-fn">optional</span>(<span class="c-fn">membership</span>.discount(<span class="c-num">10</span>)),
+  <span class="c-fn">required</span>(<span class="c-fn">payment</span>.in(<span class="c-str">"usd"</span>)),
+]));</div>
+  </div></section>
+
+  <!-- GATE ANY CREDENTIAL -->
+  <section><div class="wrap">
+    <div class="seclabel">Gate any credential</div><h2>Age, membership, a prescription, payment — all just credentials in one policy.</h2>
+    <p class="sub">The built-ins are pre-defined credentials. <code style="color:var(--teal)">defineCredential()</code> gates any consequential action with any credential — identity leads, payment settles last.</p>
+  </div></section>
+
+  <!-- WHAT'S REAL (honesty / trust model + roadmap) -->
+  <section style="background:var(--bg2)"><div class="wrap">
+    <div class="seclabel">Honest by design</div><h2>What binds cryptographically today — and what's on the roadmap.</h2>
+    <div class="rails">
+      <div class="r"><b>passkey</b> — real WebAuthn, origin/RP-ID-bound, replay-protected</div><div class="r real">✓ real crypto</div>
+      <div class="r"><b>credential / dc-payment</b> — OpenID4VP JWE + nonce + HPKE + mdoc parse</div><div class="r demo">presence-only-demo</div>
+      <div class="r"><b>additional credentials</b> — residency, license, eligibility: any issuer credential, completable end-to-end</div><div class="r" style="color:var(--dim)">roadmap</div>
+      <div class="r"><b>issuer-verified trust</b> — mdoc issuer/device signatures (Multipaz)</div><div class="r" style="color:var(--dim)">v0.2 — roadmap</div>
+    </div>
+    <p class="sub" style="margin-top:1.4rem;font-size:1rem">The wire crypto is real; the issuer trust anchor is not yet. <b style="color:var(--ink)">A presence-only gate is never sold as a real safety control.</b></p>
+  </div></section>
+
+  <!-- BUILT ON / PARTNERS -->
+  <section><div class="wrap">
+    <div class="seclabel">Built on open standards</div>
+    <div class="logos"><span>OpenWallet Foundation</span><span>OpenMobileHub</span><span>Multipaz</span><span>OpenID4VP</span><span>WebAuthn</span><span>ISO mdoc</span><span>AP2</span></div>
+  </div></section>
+
+  <!-- FOR DEVELOPERS -->
+  <section style="background:var(--bg2)"><div class="wrap">
+    <div class="seclabel">For developers</div><h2>Two packages. Apache-2.0. Ships its own types.</h2>
+    <div class="cta"><span class="btn">@openmobilehub/attesto-gate</span><span class="btn-ghost">@openmobilehub/attesto-storefront</span><span style="color:var(--mut)">· Docs · Examples · Reference demo →</span></div>
+  </div></section>
+
+  <footer><div class="wrap">Apache-2.0 · GitHub · npm · An Open Mobile Hub project (Linux Foundation / OpenWallet Foundation) · heading to GDC</div></footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var stage   = document.getElementById('stage');
+  var r1=document.getElementById('r1'), r2=document.getElementById('r2'),
+      r5=document.getElementById('r5');
+  var userBubble=document.getElementById('userBubble');
+  var typed=document.getElementById('typed'), caret=document.getElementById('caret');
+  var agentAsk=document.getElementById('agentAsk');
+  var gate=document.getElementById('gate'), wallet=document.getElementById('wallet'),
+      beam=document.getElementById('beam'), placed=document.getElementById('placed');
+
+  var MSG = "Order the 2021 reserve cabernet.";
+  var timers = [];
+  function at(ms, fn){ timers.push(setTimeout(fn, ms)); }
+  function clearAll(){ timers.forEach(clearTimeout); timers = []; }
+
+  // ---- reduced motion: render final success state, no animation ----
+  if (reduce){
+    r1.style.display='flex'; typed.textContent=MSG; caret.style.display='none';
+    userBubble.classList.add('show');
+    r2.style.display='flex'; agentAsk.classList.add('show');
+    gate.style.display='block'; gate.classList.add('show','verified');
+    wallet.style.display='block'; wallet.classList.add('show','lit');
+    r5.style.display='flex'; placed.classList.add('show');
+    return;
+  }
+
+  function typewriter(text, el, done){
+    el.textContent='';
+    var i=0;
+    (function step(){
+      if(i<=text.length){
+        el.textContent = text.slice(0,i);
+        i++;
+        at(38, step);
+      } else if(done){ done(); }
+    })();
+  }
+
+  function positionBeam(){
+    // draw beam from wallet (right/bottom) up to the gate card
+    var sb = stage.getBoundingClientRect();
+    var wb = wallet.getBoundingClientRect();
+    var gb = gate.getBoundingClientRect();
+    var x1 = wb.left - sb.left + 10;
+    var y  = gb.bottom - sb.top - 14;
+    var x2 = gb.left - sb.left + gb.width*0.5;
+    var left = Math.min(x1,x2), width = Math.abs(x2-x1)+24;
+    beam.style.left = left+'px';
+    beam.style.top  = y+'px';
+    beam.style.width = width+'px';
+  }
+
+  function reset(){
+    [r1,r2,r5].forEach(function(r){r.style.display='none';});
+    [gate,wallet,beam].forEach(function(e){e.style.display='none';});
+    userBubble.className='bubble';
+    agentAsk.className='bubble';
+    placed.className='bubble success';
+    gate.className='gate'; wallet.className='wallet'; beam.className='beam';
+    caret.style.display='inline-block';
+    typed.textContent='';
+    stage.classList.remove('fading');
+  }
+
+  function run(){
+    reset();
+
+    // beat 1 — user types (~1.2s)
+    at(300, function(){
+      r1.style.display='flex';
+      userBubble.classList.add('show');
+      typewriter(MSG, typed, function(){
+        at(350, function(){ caret.style.display='none'; });
+      });
+    });
+
+    // beat 2 — agent pauses to ask
+    at(2300, function(){
+      r2.style.display='flex';
+      agentAsk.classList.add('show');
+    });
+
+    // beat 3 — gate card slides up + pulses
+    at(3050, function(){
+      gate.style.display='block';
+      gate.classList.add('show');
+      at(450, function(){ gate.classList.add('pulsing'); });
+    });
+
+    // beat 4 — wallet lights up, beam transfers credential
+    at(3950, function(){
+      wallet.style.display='block';
+      wallet.classList.add('show');
+      at(450, function(){ wallet.classList.add('lit'); });
+    });
+    at(4800, function(){
+      positionBeam();
+      beam.style.display='block';
+      beam.classList.add('fire');
+    });
+
+    // beat 5 — gate flips to verified, order placed
+    at(5750, function(){
+      gate.classList.remove('pulsing');
+      gate.classList.add('verified');
+    });
+    at(6200, function(){
+      r5.style.display='flex';
+      placed.classList.add('show');
+    });
+
+    // hold ~1s on success, fade, restart
+    at(7500, function(){ stage.classList.add('fading'); });
+    at(8250, function(){ run(); });
+  }
+
+  run();
+  window.addEventListener('resize', function(){
+    if(beam.style.display==='block') positionBeam();
+  });
+})();
+</script>
+</body>
+</html>
